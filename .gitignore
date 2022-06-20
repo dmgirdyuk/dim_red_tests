@@ -1,0 +1,35 @@
+# project related
+results
+
+# cache
+__pycache__
+.idea
+.ipynb_checkpoints
+
+# C extensions
+*.so
+
+# Unit test / coverage reports
+.tox/
+.nox/
+.coverage
+.cache
+coverage.xml
+*.cover
+.pytest_cache/
+cover/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# venvs
+venv
+
+# configs
+poetry.lock
+
+# dists
+dists
+wheels

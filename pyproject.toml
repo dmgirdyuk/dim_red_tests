@@ -1,0 +1,73 @@
+[tool.poetry]
+name = "dim_red_tests"
+version = "0.1.0"
+description = ""
+authors = ["Dmitry Girdyuk <dm.girdyuk@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+scikit-learn = "^1.1.1"
+matplotlib = "^3.5.2"
+umap-learn = "^0.5.3"
+pandas = "^1.4.2"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+black = "^22.3.0"
+pylint = "^2.14.1"
+mypy = "^0.961"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+#black
+[tool.black]
+line-length = 88
+
+
+# mypy
+[tool.mypy]
+ignore_missing_imports = true
+
+#[[tool.mypy.overrides]]
+#module = ["src.utils"]
+#ignore_errors = true
+
+
+# isort
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+
+# pylint
+[tool.pylint.MASTER]
+extension-pkg-whitelist = ["numpy"]
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "W0511",  # fix_me
+    "W0621",  # redefined_outer_name
+]
+
+[tool.pylint.TYPECHECK]
+ignore-modules = ["matplotlib", "numpy"]
+generated-members = ["numpy.*"]
+
+[tool.pylint.FORMAT]
+max-line-length = 88
+max-attributes = 20
+max-public-methods = 20
+max-args = 10
+max-locals = 20
+max-branches = 25
+min-public-methods = 0
+variable-rgx = ["(.*[a-z][a-z0-9_]{1,30}|[a-z_]$"]
+argument-rgx = ["(.*[a-z][a-z0-9_]{1,30}|[a-z_]$"]
+attr-rgx = ["(.*[a-z][a-z0-9_]{1,30}|[a-z_]$"]
