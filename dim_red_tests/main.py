@@ -121,13 +121,9 @@ def run_experiment_comparison(
                 axes[i, j + 1], df_embedding, target, marker_size=5, title=method_name
             )
 
-    filename = "".join(
-        [
-            "exp_2_",
-            f"_{'w' if add_noise else 'wo'}",
-            f"_{'normal' if normal_noise_over_uniform else 'uniform'}.png",
-        ]
-    )
+    noise_type = "normal" if normal_noise_over_uniform else "uniform"
+    dataset_type = "general" if not add_noise else noise_type
+    filename = f"exp_2_{dataset_type}.png"
     fig.savefig(pjoin(RESULTS_FOLDER, filename), dpi=600)
 
 
