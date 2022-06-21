@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
+from typing import Union
 
 from sklearn.decomposition import PCA
 from sklearn.manifold import (
@@ -11,6 +12,10 @@ from sklearn.manifold import (
     SpectralEmbedding,
 )
 from umap import UMAP
+
+DimRedMethodT = Union[
+    MDS, TSNE, Isomap, LocallyLinearEmbedding, SpectralEmbedding, UMAP
+]
 
 
 def get_pca(n_components: int = 2) -> PCA:
@@ -39,7 +44,7 @@ class LLEMethods(Enum):
 def get_lle(
     n_components: int = 2,
     n_neighbors: int = 10,
-    method: str = LLEMethods.STANDARD.name,
+    method: str = LLEMethods.STANDARD.name.lower(),
     seed: int = 314159,
     n_jobs: int = 4,
 ) -> LocallyLinearEmbedding:
@@ -62,7 +67,7 @@ def get_spectral_embedding(
 
 def get_tsne(
     n_components: int = 2,
-    perplexity: int = 30,
+    perplexity: int = 50,
     n_iter: int = 500,
     init: str = "pca",
     seed: int = 314159,
@@ -81,8 +86,8 @@ def get_tsne(
 
 def get_umap(
     n_components: int = 2,
-    n_neighbors: int = 10,
-    min_dist: float = 0.1,
+    n_neighbors: int = 20,
+    min_dist: float = 0.5,
     seed: int = 314159,
     n_jobs: int = 4,
 ) -> UMAP:
@@ -93,14 +98,3 @@ def get_umap(
         random_state=seed,
         n_jobs=n_jobs,
     )
-
-
-EMBEDDING_GETTERS = {
-    "PCA": get_pca,
-    "MDS embedding": get_mds,
-    "Isomap embedding": get_isomap,
-    "LLE embedding": get_lle,
-    "Laplacian Eigenmaps": get_spectral_embedding,
-    "t-SNE embeedding": get_tsne,
-    "UMAP": get_umap,
-}
