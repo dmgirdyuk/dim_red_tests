@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from sklearn.preprocessing import StandardScaler
 
 from dim_red_tests.algorithms import (
+    LLEMethods,
     get_isomap,
     get_lle,
     get_mds,
@@ -37,17 +38,19 @@ DATASETS = get_datasets()
 @timeit
 def plot_all_datasets():
     df, target = DATASETS["Flow Cytometry, 10D"]
-    plot_2d(df[COLUMNS_FC_MAIN], target, title="Flow Cytometry, 10D", filename="fc")
-    plot_pairplot_fc(df, target, filename="fc_pairplot")
+    plot_2d(
+        df[COLUMNS_FC_MAIN], target, title="Flow Cytometry, 10D", filename="dataset_fc"
+    )
+    plot_pairplot_fc(df, target, filename="dataset_fc_pairplot")
 
     df, target = DATASETS["S-curve, 3D"]
-    plot_3d(df, target, title="S-curve", filename="s_curve")
+    plot_3d(df, target, title="S-curve", filename="dataset_s_curve")
 
     df, target = DATASETS["Circles, 2D"]
-    plot_2d(df, target, title="Circles", filename="circles")
+    plot_2d(df, target, title="Circles", filename="dataset_circles")
 
     df, target = DATASETS["Uniform, 2D"]
-    plot_2d(df, target, title="Uniform", filename="uniform")
+    plot_2d(df, target, title="Uniform", filename="dataset_uniform")
 
 
 @timeit
@@ -95,16 +98,17 @@ def run_experiment_comparison(
 
     methods = {
         "PCA": get_pca(),
-        "MDS embedding": get_mds(),
-        "Isomap embedding": get_isomap(),
-        "LLE embedding": get_lle(),
-        "Laplacian Eigenmaps": get_spectral_embedding(),
-        "t-SNE embedding": get_tsne(),
+        "MDS": get_mds(),
+        "Isomap": get_isomap(),
+        "LLE": get_lle(),
+        "Modified LLE": get_lle(method=LLEMethods.MODIFIED),
+        "Spectral": get_spectral_embedding(),
+        "t-SNE": get_tsne(),
         "UMAP": get_umap(),
     }
     datasets = prepare_datasets_for_comparison(add_noise, normal_noise_over_uniform)
 
-    fig, axes = plt.subplots(len(DATASETS), len(methods) + 1, figsize=(32, 16))
+    fig, axes = plt.subplots(len(DATASETS), len(methods) + 1, figsize=(18, 8))
     for i, (dataset_name, (df, target)) in enumerate(datasets.items()):
         add_2d_scatter(
             axes[i, 0],
@@ -124,7 +128,7 @@ def run_experiment_comparison(
     noise_type = "normal" if normal_noise_over_uniform else "uniform"
     dataset_type = "general" if not add_noise else noise_type
     filename = f"exp_2_{dataset_type}.png"
-    fig.savefig(pjoin(RESULTS_FOLDER, filename), dpi=600)
+    fig.savefig(pjoin(RESULTS_FOLDER, filename), dpi=150)
 
 
 @timeit
@@ -138,7 +142,7 @@ def prepare_datasets_for_comparison(
         if add_noise:
             df_new = add_noisy_columns(
                 df_new,
-                n_noisy_cols=10 - df_new.shape[1],
+                n_noisy_cols=15 - df_new.shape[1],
                 normal_noise_over_uniform=normal_noise_over_uniform,
             )
         df_new[df_new.columns] = scaler.fit_transform(df_new)

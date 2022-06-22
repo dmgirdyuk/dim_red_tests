@@ -23,10 +23,18 @@ def get_datasets() -> Dict[str, DatasetT]:
     }
 
 
-def get_s_curve_dataset(n_samples: int = 1000, seed: int = 314159) -> DatasetT:
+def get_s_curve_dataset(n_samples: int = 1200, seed: int = 314159) -> DatasetT:
     data, labels = datasets.make_s_curve(n_samples, random_state=seed)
+
     # dim1 and dim3 provides the S-shaped 2D curve
-    return pd.DataFrame(data=data, columns=COLUMNS_3D), pd.Series(labels)
+    df, target = pd.DataFrame(data=data, columns=COLUMNS_3D), pd.Series(labels)
+
+    # make a hole
+    mask = df['dim1'] ** 2 + (df['dim2'] - 1) ** 2 >= 0.2
+    df = df[mask]
+    target = target[mask]
+
+    return df, target
 
 
 def get_circles(

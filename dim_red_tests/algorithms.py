@@ -30,7 +30,7 @@ def get_mds(
     )
 
 
-def get_isomap(n_components: int = 2, n_neighbors: int = 10, n_jobs: int = 4) -> Isomap:
+def get_isomap(n_components: int = 2, n_neighbors: int = 20, n_jobs: int = 4) -> Isomap:
     return Isomap(n_components=n_components, n_neighbors=n_neighbors, n_jobs=n_jobs)
 
 
@@ -43,25 +43,31 @@ class LLEMethods(Enum):
 
 def get_lle(
     n_components: int = 2,
-    n_neighbors: int = 10,
-    method: str = LLEMethods.STANDARD.name.lower(),
+    n_neighbors: int = 20,
+    method: LLEMethods = LLEMethods.STANDARD,
     seed: int = 314159,
     n_jobs: int = 4,
 ) -> LocallyLinearEmbedding:
     return LocallyLinearEmbedding(
         n_components=n_components,
         n_neighbors=n_neighbors,
-        method=method,
+        method=method.value,
         random_state=seed,
         n_jobs=n_jobs,
     )
 
 
 def get_spectral_embedding(
-    n_components: int = 2, seed: int = 314159, n_jobs: int = 4
+    n_components: int = 2,
+    n_neighbors: int = 20,
+    seed: int = 314159,
+    n_jobs: int = 4,
 ) -> SpectralEmbedding:
     return SpectralEmbedding(
-        n_components=n_components, random_state=seed, n_jobs=n_jobs
+        n_components=n_components,
+        n_neighbors=n_neighbors,
+        random_state=seed,
+        n_jobs=n_jobs,
     )
 
 

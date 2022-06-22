@@ -31,7 +31,7 @@ def plot_2d(
 
     if save:
         assert filename is not None, "Specify filename to save plot."
-        fig.savefig(pjoin(RESULTS_FOLDER, f"{filename}.png"), dpi=600)
+        fig.savefig(pjoin(RESULTS_FOLDER, f"{filename}.png"), dpi=150)
 
 
 def add_2d_scatter(
@@ -81,7 +81,7 @@ def plot_3d(
 
     if save:
         assert filename is not None, "Specify filename to save plot."
-        fig.savefig(pjoin(RESULTS_FOLDER, f"{filename}.png"), dpi=600)
+        fig.savefig(pjoin(RESULTS_FOLDER, f"{filename}.png"), dpi=150)
 
 
 def plot_pairplot_fc(df: pd.DataFrame, target: pd.Series, filename: str) -> None:
@@ -91,5 +91,5 @@ def plot_pairplot_fc(df: pd.DataFrame, target: pd.Series, filename: str) -> None
     df_new[df_new.columns] = StandardScaler().fit_transform(df_new)
     df_new["labels"] = labels.values
     sns.pairplot(df_new, hue="labels", diag_kind="hist").figure.savefig(
-        pjoin(RESULTS_FOLDER, f"{filename}.png"), dpi=300
+        pjoin(RESULTS_FOLDER, f"{filename}.png"), dpi=150
     )
